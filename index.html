@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Email Subject Line Tester — Score Your Subject Line | BeLikeNative</title>
+<meta name="description" content="Free email subject line tester: get a 0-100 score, spam word detection, length analysis, and actionable tips. Boost your open rates instantly.">
+<meta name="keywords" content="email subject line tester,email subject analyzer,email subject line checker,email subject score">
+<meta property="og:title" content="Free Email Subject Line Tester — Score Your Subject Line | BeLikeNative">
+<meta property="og:description" content="Score your email subject line 0-100. Detect spam triggers, optimize length, boost open rates. Free, instant analysis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://theluckystrike.github.io/bln-email-subject-tester/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://theluckystrike.github.io/bln-email-subject-tester/">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e0e0e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;min-height:100vh}
+.container{max-width:780px;margin:0 auto;padding:20px}
+header{text-align:center;padding:30px 0 20px}
+h1{font-size:1.8rem;background:linear-gradient(135deg,#a78bfa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{color:#9ca3af;font-size:0.95rem}
+.input-section{margin:24px 0;position:relative}
+input[type="text"]{width:100%;background:#12121a;border:1px solid #2a2a3a;border-radius:10px;color:#e0e0e8;font-size:1.1rem;padding:16px 20px;font-family:inherit;transition:border-color .2s}
+input:focus{outline:none;border-color:#a78bfa}
+input::placeholder{color:#4a4a5a}
+.char-count{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#6b7280;font-size:0.8rem}
+.results{display:none;margin-top:24px}
+.score-ring{text-align:center;margin:20px 0 24px;padding:28px;background:#12121a;border-radius:12px;border:1px solid #2a2a3a}
+.ring{position:relative;width:140px;height:140px;margin:0 auto 12px}
+.ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#1e1e2e;stroke-width:10}
+.ring-fill{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .6s ease,stroke .3s}
+.ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-score{font-size:2.4rem;font-weight:700;display:block}
+.ring-grade{font-size:1.2rem;font-weight:600;display:block;margin-top:-2px}
+.score-label{color:#9ca3af;font-size:0.9rem;margin-top:8px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.check{background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;font-size:0.88rem}
+.check-icon{font-size:1.2rem;flex-shrink:0}
+.check-pass{color:#22c55e}
+.check-warn{color:#f59e0b}
+.check-fail{color:#ef4444}
+.check-info{color:#3b82f6}
+.tips{background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:20px;margin:20px 0}
+.tips h3{color:#a78bfa;margin-bottom:12px;font-size:1rem}
+.tip-item{padding:6px 0;font-size:0.88rem;color:#c0c0ca}
+.preview{background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:20px;margin:20px 0}
+.preview h3{color:#9ca3af;margin-bottom:12px;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px}
+.preview-inbox{background:#1a1a24;border-radius:8px;padding:14px 16px}
+.preview-from{color:#6b7280;font-size:0.8rem}
+.preview-subject{font-weight:600;font-size:0.95rem;margin-top:4px;word-break:break-word}
+.preview-snippet{color:#6b7280;font-size:0.82rem;margin-top:2px}
+.empty-state{text-align:center;color:#4a4a5a;padding:40px 0;font-size:0.95rem}
+.branding{text-align:center;padding:30px 0;border-top:1px solid #1a1a2a;margin-top:30px}
+.branding a{color:#a78bfa;text-decoration:none}
+.branding a:hover{text-decoration:underline}
+.branding p{color:#6b7280;font-size:0.85rem;margin-top:6px}
+.cta-link{display:inline-block;margin-top:12px;padding:10px 24px;background:linear-gradient(135deg,#a78bfa,#3b82f6);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem;transition:opacity .2s}
+.cta-link:hover{opacity:0.9;text-decoration:none}
+@media(max-width:600px){h1{font-size:1.4rem}.checks{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Email Subject Line Tester</h1>
+<p class="subtitle">Enter your subject line to get an instant score and actionable tips</p>
+</header>
+<div class="input-section">
+<input type="text" id="input" placeholder="Type your email subject line here..." maxlength="200" autocomplete="off">
+<span class="char-count" id="charCount">0/200</span>
+</div>
+<div class="results" id="results">
+<div class="score-ring">
+<div class="ring">
+<svg width="140" height="140" viewBox="0 0 140 140">
+<circle class="ring-bg" cx="70" cy="70" r="60"/>
+<circle class="ring-fill" id="ringFill" cx="70" cy="70" r="60" stroke-dasharray="377" stroke-dashoffset="377"/>
+</svg>
+<div class="ring-text">
+<span class="ring-score" id="scoreVal">0</span>
+<span class="ring-grade" id="gradeVal">—</span>
+</div>
+</div>
+<div class="score-label" id="scoreLabel">Enter a subject line to see your score</div>
+</div>
+<div class="checks" id="checks"></div>
+<div class="preview">
+<h3>Inbox Preview</h3>
+<div class="preview-inbox">
+<div class="preview-from">Your Brand</div>
+<div class="preview-subject" id="previewSubject">—</div>
+<div class="preview-snippet">This is how your email will appear in the inbox...</div>
+</div>
+</div>
+<div class="tips" id="tipsSection">
+<h3>Tips to Improve</h3>
+<div id="tipsList"></div>
+</div>
+</div>
+<div class="empty-state" id="emptyState">Type a subject line above to see your score and analysis</div>
+<div class="branding">
+<p><strong>Powered by <a href="https://belikenative.com" target="_blank" rel="noopener">BeLikeNative</a></strong> — AI writing tools for 100+ languages</p>
+<p>Craft perfect emails in any language with AI-powered writing assistance</p>
+<a class="cta-link" href="https://chromewebstore.google.com/detail/belikenative-ai-grammar-w/dgodddelmdkhanlhcfhiieegpmpjfgao" target="_blank" rel="noopener">Get the Chrome Extension — Free</a>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+
+var SPAM_WORDS = ["free","urgent","act now","limited time","click here","buy now","order now","don't miss","congratulations","winner","cash","bonus","discount","guarantee","no obligation","risk free","100%","save big","lowest price","best price","cheap","clearance","earn money","make money","extra income","double your","million","billion","credit card","no cost","no fees"];
+var POWER_WORDS = ["exclusive","proven","secret","insider","ultimate","essential","breakthrough","remarkable","powerful","guaranteed","instant","effortless","surprising","unveiled","discover","revealed","limited","new","now","today","announcing","introducing","finally","alert","important","critical","update","invitation"];
+
+function getWords(text) {
+  return text.trim().split(/\s+/).filter(function(w) { return w.length > 0; });
+}
+
+function hasEmoji(text) {
+  return /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(text);
+}
+
+function hasAllCaps(text) {
+  var words = getWords(text);
+  var capsWords = 0;
+  for (var i = 0; i < words.length && i < 200; i++) {
+    var clean = words[i].replace(/[^A-Za-z]/g, "");
+    if (clean.length >= 3 && clean === clean.toUpperCase()) { capsWords++; }
+  }
+  return capsWords >= 2 || (words.length > 0 && capsWords === words.length);
+}
+
+function hasPersonalization(text) {
+  return /\{[^}]+\}|\[[^\]]*name[^\]]*\]/i.test(text);
+}
+
+function hasQuestion(text) { return text.indexOf("?") !== -1; }
+
+function hasNumber(text) { return /\d/.test(text); }
+
+function findSpamWords(text) {
+  var lower = text.toLowerCase();
+  var found = [];
+  for (var i = 0; i < SPAM_WORDS.length; i++) {
+    if (lower.indexOf(SPAM_WORDS[i]) !== -1) { found.push(SPAM_WORDS[i]); }
+  }
+  return found;
+}
+
+function findPowerWords(text) {
+  var lower = text.toLowerCase();
+  var found = [];
+  for (var i = 0; i < POWER_WORDS.length; i++) {
+    if (lower.indexOf(POWER_WORDS[i]) !== -1) { found.push(POWER_WORDS[i]); }
+  }
+  return found;
+}
+
+function gradeFromScore(score) {
+  if (score >= 90) { return "A+"; }
+  if (score >= 80) { return "A"; }
+  if (score >= 70) { return "B"; }
+  if (score >= 60) { return "C"; }
+  if (score >= 50) { return "D"; }
+  return "F";
+}
+
+function gradeColor(score) {
+  if (score >= 80) { return "#22c55e"; }
+  if (score >= 60) { return "#6ee7b7"; }
+  if (score >= 40) { return "#f59e0b"; }
+  if (score >= 20) { return "#f97316"; }
+  return "#ef4444";
+}
+
+function analyze(text) {
+  console.assert(typeof text === "string", "analyze: text must be string");
+
+  var resultsEl = document.getElementById("results");
+  var emptyEl = document.getElementById("emptyState");
+
+  if (text.trim().length === 0) {
+    resultsEl.style.display = "none";
+    emptyEl.style.display = "block";
+    return;
+  }
+
+  resultsEl.style.display = "block";
+  emptyEl.style.display = "none";
+
+  var len = text.length;
+  var words = getWords(text);
+  var wordCount = words.length;
+  var spam = findSpamWords(text);
+  var power = findPowerWords(text);
+  var emoji = hasEmoji(text);
+  var allCaps = hasAllCaps(text);
+  var personalized = hasPersonalization(text);
+  var question = hasQuestion(text);
+  var hasNum = hasNumber(text);
+
+  /* Scoring */
+  var score = 50;
+
+  /* Length: optimal 30-50 chars */
+  if (len >= 30 && len <= 50) { score += 15; }
+  else if (len >= 20 && len <= 60) { score += 8; }
+  else if (len > 80) { score -= 10; }
+  else if (len < 10) { score -= 15; }
+
+  /* Word count: optimal 5-9 */
+  if (wordCount >= 5 && wordCount <= 9) { score += 10; }
+  else if (wordCount >= 3 && wordCount <= 12) { score += 5; }
+  else { score -= 5; }
+
+  /* Spam words */
+  score -= spam.length * 8;
+
+  /* All caps */
+  if (allCaps) { score -= 15; }
+
+  /* Power words */
+  score += Math.min(power.length * 5, 15);
+
+  /* Personalization */
+  if (personalized) { score += 8; }
+
+  /* Question */
+  if (question) { score += 5; }
+
+  /* Number */
+  if (hasNum) { score += 5; }
+
+  /* Emoji: slight positive */
+  if (emoji) { score += 3; }
+
+  score = Math.max(0, Math.min(100, score));
+
+  console.assert(score >= 0 && score <= 100, "score must be in 0-100 range");
+
+  /* Update score ring */
+  var circumference = 377;
+  var offset = circumference - (score / 100) * circumference;
+  var color = gradeColor(score);
+  var ring = document.getElementById("ringFill");
+  ring.style.strokeDashoffset = offset;
+  ring.style.stroke = color;
+  document.getElementById("scoreVal").textContent = score;
+  document.getElementById("scoreVal").style.color = color;
+  var grade = gradeFromScore(score);
+  document.getElementById("gradeVal").textContent = grade;
+  document.getElementById("gradeVal").style.color = color;
+
+  var labels = { "A+": "Excellent!", "A": "Great subject line!", "B": "Good, minor improvements possible", "C": "Average, needs work", "D": "Below average", "F": "Needs significant improvement" };
+  document.getElementById("scoreLabel").textContent = labels[grade] || "";
+
+  /* Build checks */
+  var checksHTML = "";
+  function addCheck(icon, cls, label) {
+    checksHTML += '<div class="check"><span class="check-icon ' + cls + '">' + icon + '</span><span>' + label + '</span></div>';
+  }
+
+  /* Length check */
+  if (len >= 30 && len <= 50) { addCheck("&#10003;", "check-pass", "Length: " + len + " chars (optimal)"); }
+  else if (len < 30) { addCheck("&#9888;", "check-warn", "Length: " + len + " chars (too short, aim for 30-50)"); }
+  else if (len <= 70) { addCheck("&#9888;", "check-warn", "Length: " + len + " chars (slightly long)"); }
+  else { addCheck("&#10007;", "check-fail", "Length: " + len + " chars (too long, may truncate)"); }
+
+  /* Word count */
+  if (wordCount >= 5 && wordCount <= 9) { addCheck("&#10003;", "check-pass", "Word count: " + wordCount + " words (optimal)"); }
+  else { addCheck("&#9888;", "check-warn", "Word count: " + wordCount + " words (aim for 5-9)"); }
+
+  /* Spam */
+  if (spam.length === 0) { addCheck("&#10003;", "check-pass", "No spam trigger words detected"); }
+  else { addCheck("&#10007;", "check-fail", "Spam triggers: " + spam.join(", ")); }
+
+  /* All caps */
+  if (!allCaps) { addCheck("&#10003;", "check-pass", "No excessive ALL CAPS"); }
+  else { addCheck("&#10007;", "check-fail", "ALL CAPS detected (reduces trust)"); }
+
+  /* Power words */
+  if (power.length > 0) { addCheck("&#10003;", "check-pass", "Power words: " + power.join(", ")); }
+  else { addCheck("&#9679;", "check-info", "No power words (consider adding one)"); }
+
+  /* Personalization */
+  if (personalized) { addCheck("&#10003;", "check-pass", "Personalization token detected"); }
+  else { addCheck("&#9679;", "check-info", "No personalization (e.g., {name})"); }
+
+  /* Question */
+  if (question) { addCheck("&#10003;", "check-pass", "Question format (boosts open rates)"); }
+  else { addCheck("&#9679;", "check-info", "Not a question (questions can increase opens)"); }
+
+  /* Number */
+  if (hasNum) { addCheck("&#10003;", "check-pass", "Contains a number (increases CTR)"); }
+  else { addCheck("&#9679;", "check-info", "No numbers (numbers can boost clicks)"); }
+
+  /* Emoji */
+  if (emoji) { addCheck("&#10003;", "check-pass", "Emoji used (can improve visibility)"); }
+
+  document.getElementById("checks").innerHTML = checksHTML;
+
+  /* Preview */
+  document.getElementById("previewSubject").textContent = text;
+
+  /* Tips */
+  var tips = [];
+  if (len < 30) { tips.push("Add more context — subject lines under 30 characters often lack detail."); }
+  if (len > 60) { tips.push("Shorten your subject line. Many email clients truncate after 50-60 characters."); }
+  if (spam.length > 0) { tips.push("Remove spam trigger words (" + spam.join(", ") + ") to avoid spam filters."); }
+  if (allCaps) { tips.push("Avoid ALL CAPS — it looks like shouting and triggers spam filters."); }
+  if (power.length === 0) { tips.push("Add a power word like \"exclusive\", \"proven\", or \"discover\" to create urgency."); }
+  if (!personalized) { tips.push("Add personalization (e.g., {name}) to boost open rates by up to 26%."); }
+  if (!question && !hasNum) { tips.push("Try a question format or include a number for higher engagement."); }
+  if (tips.length === 0) { tips.push("Your subject line is well-optimized. A/B test variations to find the best performer."); }
+
+  var tipsHTML = "";
+  for (var i = 0; i < tips.length && i < 20; i++) {
+    tipsHTML += '<div class="tip-item">&#8226; ' + tips[i] + '</div>';
+  }
+  document.getElementById("tipsList").innerHTML = tipsHTML;
+}
+
+var timer = null;
+var inputEl = document.getElementById("input");
+inputEl.addEventListener("input", function() {
+  document.getElementById("charCount").textContent = inputEl.value.length + "/200";
+  if (timer) { clearTimeout(timer); }
+  timer = setTimeout(function() { analyze(inputEl.value); }, 150);
+});
+
+})();
+</script>
+</body>
+</html>
